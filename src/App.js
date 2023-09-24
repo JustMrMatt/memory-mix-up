@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import "./app.css";
-import characters from "./characters.json";
-import Row from "./components/row/Row";
-import BottomNav from "./components/BottomBar";
+import "./App.css";
+import characters from "./Characters.json";
+import Row from "./Components/row/Row.js";
+import BottomNav from "./Components/BottomBar";
 
 class App extends Component {
   constructor(props) {
