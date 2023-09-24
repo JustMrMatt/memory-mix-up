@@ -48,7 +48,7 @@ class App extends Component {
   // Clear clicked array
   emptyClicked = () => {
     this.setState({
-      clicked: Array(12).fill(false)
+      clicked: Array(16).fill(false)
     });
   }
   // Reset the score
@@ -75,7 +75,7 @@ class App extends Component {
     const id = event.target.id;
     if (this.findId(id) !== undefined) {
       // It has already been clicked!
-      alert("You lose");
+      alert("Sorry, You lost.");
       // Reset the counters...
       this.emptyClicked();
       this.resetScoreZero();
@@ -98,7 +98,7 @@ class App extends Component {
       // Shuffle the array
       this.shuffle();
       // Check for win
-      if (this.returnFirstNull() === 11) {
+      if (this.returnFirstNull() === 16) {
         // You win! Reset stuff
         alert("You win!");
         this.emptyClicked();
@@ -108,6 +108,15 @@ class App extends Component {
   }
 
   render() {
+    const totalCards = this.state.cards.length;
+  
+    // Find the square root and round it up to get the number of cards per row
+    const cardsPerRow = Math.ceil(Math.sqrt(totalCards));
+
+    // Set the CSS variable
+    document.documentElement.style.setProperty('--cards-per-row', cardsPerRow);
+    
+    const numberOfRows = Math.ceil(totalCards / cardsPerRow);
 
     return (
       <>
@@ -118,7 +127,7 @@ class App extends Component {
                 {/* <Typography variant="h4"  className="navbar-brand whiteText impactFont">
                   Spider-Click
                 </Typography> */}
-                <h2 className="whiteText impactFont">Toy Story Click</h2>
+                <h2 className="whiteText impactFont">Memory Mix-Up</h2>
               </div>
 
               <ul className="nav navbar-nav whiteText">
@@ -130,27 +139,19 @@ class App extends Component {
           </nav>
         </AppBar>
         <div id="main-content" className="container">
-          <div className="row">
-            {
-              this.state.cards.map((card, i) => (
-                i < 4 && <Row {...card} handleClick={this.handleClick} key={i} />
-              ))
-            }
+        {Array.from({ length: numberOfRows }).map((_, rowIndex) => (
+          <div className="row" key={rowIndex}>
+            {this.state.cards
+              .slice(rowIndex * cardsPerRow, (rowIndex + 1) * cardsPerRow)
+              .map((card, index) => (
+                <Row
+                  {...card}
+                  handleClick={this.handleClick}
+                  key={index}
+                />
+              ))}
           </div>
-          <div className="row">
-            {
-              this.state.cards.map((card, i) => (
-                i > 3 && i < 8 && <Row {...card} handleClick={this.handleClick} key={i} />
-              ))
-            }
-          </div>
-          <div className="row">
-            {
-              this.state.cards.map((card, i) => (
-                i > 7 && <Row {...card} handleClick={this.handleClick} key={i} />
-              ))
-            }
-          </div>
+        ))}
         </div>
         <BottomNav style={{ background: "#FFFFFF", marginTop: "17.5px", paddingTop: "15px", borderTop: "2.5px solid slategray" }}>
           

@@ -8,6 +8,9 @@
 
 #main-content {
   margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--cards-per-row)), 1fr));
+  gap: 10px;
 }
 
 .card {
@@ -15,7 +18,7 @@
 }
 
 .card-image {
-  width: 250px;
+  width: calc(100% - 20px); /* Adjusts the width according to the card's parent width and accounts for margins. */
   height: auto;
 }
 
