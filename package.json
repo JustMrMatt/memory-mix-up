@@ -2,7 +2,7 @@
   "homepage": "https://JustMrMatt.github.io/memory-mix-up",
   "name": "clicky-react-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@material-ui/core": "^4.3.1",
     "gh-pages": "^2.1.1",
