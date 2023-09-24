@@ -12,7 +12,7 @@ class App extends Component {
       cards: this.shuffleArray(characters).slice(0, 16),
       score: 0,
       topScore: 0,
-      clicked: Array(12).fill(false)
+      clicked: Array(16).fill(false)
     };
   }
 
@@ -38,9 +38,7 @@ class App extends Component {
   }
   // Check the clicked array for an id
   findId = id => {
-    return this.state.clicked.find(elem => {
-      return elem === id && true;
-    });
+    return this.state.clicked.includes(id);
   }
   // Return the index of where the first null(empty space in clicked array) is found
   returnFirstNull = () => {
@@ -89,7 +87,10 @@ class App extends Component {
       this.emptyClicked();
       this.resetScoreZero();
       // reshuffle
-      this.shuffle();
+      this.setState({
+        cards: this.shuffleArray(characters).slice(0, 16),
+        clicked: Array(16).fill(false)  // Reinitialize the clicked array
+      });
     }
     else {
       // Not already clicked...
@@ -110,7 +111,9 @@ class App extends Component {
       if (this.returnFirstNull() === 16) {
         // Reset board and continue
         this.setState({
-          cards: this.shuffleArray(characters).slice(0, 16)
+          cards: this.shuffleArray(characters).slice(0, 16),
+          // Reinitialize the clicked array
+          clicked: Array(16).fill(false)  
         });        
       }
     }
@@ -119,8 +122,8 @@ class App extends Component {
   render() {
     const totalCards = this.state.cards.length;
   
-    // Find the square root and round it up to get the number of cards per row
-    const cardsPerRow = Math.ceil(Math.sqrt(totalCards));
+    // Ensure it doesn't exceed 4
+    const cardsPerRow = Math.min(4, Math.ceil(Math.sqrt(totalCards))); 
 
     // Set the CSS variable
     document.documentElement.style.setProperty('--cards-per-row', cardsPerRow);

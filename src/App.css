@@ -9,7 +9,7 @@
 #main-content {
   margin-top: 80px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--cards-per-row)), 1fr));
+  grid-template-columns: repeat(4, 1fr); /* since you always want 4 cards per row */
   gap: 10px;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .card-image {
-  width: calc(100% - 20px); /* Adjusts the width according to the card's parent width and accounts for margins. */
+  width: 250px;
   height: auto;
 }
 
