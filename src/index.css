@@ -1,0 +1,33 @@
+* {
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+.impactFont {
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+#main-content {
+  margin-top: 80px;
+}
+
+.card {
+  margin: 10px;
+}
+
+.card-image {
+  width: 250px;
+  height: auto;
+}
+
+.card-image:hover {
+  cursor: pointer;
+  background-color: #b3ffec;
+}
+
+.myNavColor {
+  background-color: #00cc99;
+}
+
+.whiteText {
+  color: #FBF7F9;
+}

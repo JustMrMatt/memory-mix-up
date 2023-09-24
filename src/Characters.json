@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "alien1",
+        "image": "../images/alien1.jpg"
+    },
+    {
+        "id": 2,
+        "name": "buzz1",
+        "image": "../images/buzz1.jpg"
+    },
+    {
+        "id": 3,
+        "name": "buzz2",
+        "image": "../images/buzz2.jpg"
+    },
+    {
+        "id": 4,
+        "name": "buzz3",
+        "image": "../images/buzz3.jpg"
+    },
+    {
+        "id": 5,
+        "name": "buzzandwoody",
+        "image": "../images/buzzandwoody1.jpg"
+    },
+    {
+        "id": 6,
+        "name": "horsey1",
+        "image": "../images/horsey1.png"
+    },
+    {
+        "id": 7,
+        "name": "horsey2",
+        "image": "../images/horsey2.jpg"
+    },
+    {
+        "id": 8,
+        "name": "jessie1",
+        "image": "../images/jessie1.jpg"
+    },
+    {
+        "id": 9,
+        "name": "mrpotato1",
+        "image": "../images/mrpotato1.png"
+    },
+    {
+        "id": 10,
+        "name": "mrpotato2",
+        "image": "../images/mrpotato2.jpg"
+    },
+    {
+        "id": 11,
+        "name": "mrspotato1",
+        "image": "../images/mspotato1.png"
+    },
+    {
+        "id": 12,
+        "name": "piggy1",
+        "image": "../images/piggy1.png"
+    },
+    {
+        "id": 13,
+        "name": "piggy2",
+        "image": "../images/piggy2.jpg"
+    },
+    {
+        "id": 14,
+        "name": "rex1",
+        "image": "../images/rex1.png"
+    },
+    {
+        "id": 15,
+        "name": "woody1",
+        "image": "../images/woody1.png"
+    },
+    {
+        "id": 16,
+        "name": "woody2",
+        "image": "../images/woody2.jpg"
+    }
+]
