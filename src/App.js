@@ -9,14 +9,23 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: characters,
+      cards: this.shuffleArray(characters).slice(0, 16),
       score: 0,
       topScore: 0,
       clicked: Array(12).fill(false)
     };
   }
 
-  // Fisher-Yates shuffle on cards, update state
+  //Fisher-Yates Shuffle on characters
+  shuffleArray = (array) => {
+    let shuffled = array.slice();  // make a copy
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+  //Fisher-Yates Shuffle on cards, update state
   shuffle = () => {
     let c = this.state.cards;
     for (let i = c.length - 1; i > 0; i--) {
@@ -97,12 +106,12 @@ class App extends Component {
       }
       // Shuffle the array
       this.shuffle();
-      // Check for win
+      // Check for success
       if (this.returnFirstNull() === 16) {
-        // You win! Reset stuff
-        alert("You win!");
-        this.emptyClicked();
-        this.resetScoreZero();
+        // Reset board and continue
+        this.setState({
+          cards: this.shuffleArray(characters).slice(0, 16)
+        });        
       }
     }
   }
