@@ -107,14 +107,14 @@ class App extends Component {
       }
       // Shuffle the array
       this.shuffle();
-      // Check for success
-      if (this.returnFirstNull() === 16) {
-        // Reset board and continue
-        this.setState({
+      // Check for success (Full board completed)
+    if (this.state.score % 16 === 0 && this.state.score !== 0) {
+      // Reset board and continue
+      this.setState({
           cards: this.shuffleArray(characters).slice(0, 16),
           // Reinitialize the clicked array
-          clicked: Array(16).fill(false)  
-        });        
+          clicked: Array(16).fill(false)
+      });           
       }
     }
   }
