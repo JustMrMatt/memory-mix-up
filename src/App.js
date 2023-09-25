@@ -6,13 +6,29 @@ import Row from "./Components/row/Row.js";
 import BottomNav from "./Components/BottomBar";
 
 class App extends Component {
+  // Define levels, card counts, and the score thresholds
+  levels = [
+    { cards: 4, threshold: 4 },
+    { cards: 4, threshold: 8 },
+    { cards: 9, threshold: 17 },
+    { cards: 9, threshold: 26 },
+    { cards: 9, threshold: 35 },
+    { cards: 16, threshold: 51 },
+    { cards: 16, threshold: 67 },
+    { cards: 16, threshold: 83 },
+    { cards: 16, threshold: 99 },
+    { cards: 16, threshold: 115 }
+];
+
   constructor(props) {
     super(props);
     this.state = {
-      cards: this.shuffleArray(characters).slice(0, 16),
+      cards: this.shuffleArray(characters).slice(0, this.levels[0].cards),
       score: 0,
       topScore: 0,
-      clicked: Array(16).fill(false)
+      clicked: Array(this.levels[0].cards).fill(false),
+      currentLevel: 0,
+      usedCards: []
     };
   }
 
@@ -77,64 +93,101 @@ class App extends Component {
       score: this.state.score + 1
     });
   }
-  // Main game logic here
-  handleClick = event => {
-    const id = event.target.id;
-    if (this.findId(id)) {
+
+  // Get new cards each level
+  getNewCards = (num) => {
+    let newCards = [];
+    // Fetch unique cards not used before in this game session
+    while (newCards.length < num) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        if (!this.state.usedCards.includes(randomIndex) && !newCards.includes(characters[randomIndex])) {
+            newCards.push(characters[randomIndex]);
+            this.setState(prevState => ({
+                usedCards: [...prevState.usedCards, randomIndex]
+            }));
+        }
+    }
+    return newCards;
+  }
+
+
+// Main game logic here
+handleClick = event => {
+  const id = event.target.id;
+
+  if (this.findId(id)) {
       // It has already been clicked!
-      alert("Sorry, You lost.");
+      alert('Sorry, You already clicked that one.');
       // Reset the counters...
       this.emptyClicked();
       this.resetScoreZero();
-      // reshuffle
+      // Reset the game to the start
       this.setState({
-        cards: this.shuffleArray(characters).slice(0, 16),
-        clicked: Array(16).fill(false)  // Reinitialize the clicked array
+          cards: this.shuffleArray(characters).slice(0, this.levels[0].cards),
+          clicked: Array(this.levels[0].cards).fill(false),
+          currentLevel: 0,
+          usedCards: []
       });
-    }
-    else {
+      // No need to shuffle here since we're using shuffleArray above
+  } else {
       // Not already clicked...
       // Put the id in the clicked array
       this.insertId(id, this.returnFirstNull());
       
-      let newScore = this.state.score + 1;  // Predict the new score
+      let newScore = this.state.score + 1;
       let newTopScore = this.state.topScore;
       
       if (newScore > this.state.topScore) {
           newTopScore = newScore;
       }
       
-      // Shuffle the array
-      this.shuffle();
+      this.setState({
+          score: newScore,
+          topScore: newTopScore
+      });
+      
+      this.shuffle();  // Shuffle the cards here after updating the score.
+      
+      // Check if all cards have been clicked for the current level
+      if (newScore >= this.levels[this.state.currentLevel].threshold) {
+        let newLevel = this.state.currentLevel + 1;
 
-      // Check for success (Full board completed)
-      if (newScore % 16 === 0) {
-          // Reset board and continue
-          this.setState({
-              cards: this.shuffleArray(characters).slice(0, 16),
-              clicked: Array(16).fill(false),
-              score: newScore,
-              topScore: newTopScore
-          });           
-      } else {
-          // Only update scores
-          this.setState({
-              score: newScore,
-              topScore: newTopScore
-          });
+        // Logging the current state of the usedCards array
+        console.log("Used Cards:", this.state.usedCards);
+    
+        // Logging the new level
+        console.log("New Level:", newLevel);
+    
+        let fetchedNewCards = this.getNewCards(this.levels[newLevel].cards);
+        console.log("New Cards:", fetchedNewCards);
+        
+        if (newLevel >= this.levels.length) {
+            // If user completes the last level
+            alert("Congratulations! You have beat the game.");
+            this.setState({
+                score: 0,
+                currentLevel: 0,
+                clicked: Array(this.levels[0].cards).fill(false),
+                cards: this.shuffleArray(characters).slice(0, this.levels[0].cards),
+                usedCards: []
+            });
+            return;
+        }
+      
+        // If all cards have been clicked, proceed to the next level
+        this.setState({
+          cards: this.shuffleArray(fetchedNewCards).slice(0, this.levels[newLevel].cards),
+          clicked: Array(this.levels[newLevel].cards).fill(false),
+          currentLevel: newLevel
+        });
       }
     }
   }
 
   render() {
     const totalCards = this.state.cards.length;
-  
-    // Ensure it doesn't exceed 4
-    const cardsPerRow = Math.min(4, Math.ceil(Math.sqrt(totalCards))); 
-
-    // Set the CSS variable
+    const cardsPerRow = Math.min(4, Math.ceil(Math.sqrt(totalCards)));
     document.documentElement.style.setProperty('--cards-per-row', cardsPerRow);
-    
     const numberOfRows = Math.ceil(totalCards / cardsPerRow);
 
     return (
