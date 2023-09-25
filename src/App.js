@@ -80,7 +80,7 @@ class App extends Component {
   // Main game logic here
   handleClick = event => {
     const id = event.target.id;
-    if (this.findId(id) !== undefined) {
+    if (this.findId(id)) {
       // It has already been clicked!
       alert("Sorry, You lost.");
       // Reset the counters...
