@@ -96,25 +96,32 @@ class App extends Component {
       // Not already clicked...
       // Put the id in the clicked array
       this.insertId(id, this.returnFirstNull());
-      // Is the top score bigger than the score?
-      if (this.state.topScore > this.state.score) {
-        // Update only the score
-        this.incrementScore();
+      
+      let newScore = this.state.score + 1;  // Predict the new score
+      let newTopScore = this.state.topScore;
+      
+      if (newScore > this.state.topScore) {
+          newTopScore = newScore;
       }
-      else {
-        // Update both because they're the same
-        this.incrementBothScores();
-      }
+      
       // Shuffle the array
       this.shuffle();
+
       // Check for success (Full board completed)
-    if (this.state.score % 16 === 0 && this.state.score !== 0) {
-      // Reset board and continue
-      this.setState({
-          cards: this.shuffleArray(characters).slice(0, 16),
-          // Reinitialize the clicked array
-          clicked: Array(16).fill(false)
-      });           
+      if (newScore % 16 === 0) {
+          // Reset board and continue
+          this.setState({
+              cards: this.shuffleArray(characters).slice(0, 16),
+              clicked: Array(16).fill(false),
+              score: newScore,
+              topScore: newTopScore
+          });           
+      } else {
+          // Only update scores
+          this.setState({
+              score: newScore,
+              topScore: newTopScore
+          });
       }
     }
   }
