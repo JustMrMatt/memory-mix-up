@@ -4,8 +4,27 @@ import "./App.css";
 import characters from "./Characters.json";
 import Row from "./Components/row/Row.js";
 import BottomNav from "./Components/BottomBar";
+import { auth } from './firebase';
+import Login from './Login';
+
 
 class App extends Component {
+  state = {
+    isAuthenticated: false,
+    // ... other state variables
+  }
+
+  componentDidMount() {
+    // This will check if the user has logged in. If yes, then it will set isAuthenticated to true.
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            this.setState({ isAuthenticated: true });
+        } else {
+            this.setState({ isAuthenticated: false });
+        }
+    });
+  }
+
   // Define levels, card counts, and the score thresholds
   levels = [
     { cards: 4, threshold: 4 },
@@ -111,9 +130,9 @@ class App extends Component {
   }
 
 
-// Main game logic here
-handleClick = event => {
-  const id = event.target.id;
+  // Main game logic here
+  handleClick = event => {
+    const id = event.target.id;
 
   if (this.findId(id)) {
       // It has already been clicked!
@@ -185,6 +204,10 @@ handleClick = event => {
   }
 
   render() {
+    if (!this.state.isAuthenticated) {
+      return <Login />;
+    }
+
     const totalCards = this.state.cards.length;
     const cardsPerRow = Math.min(4, Math.ceil(Math.sqrt(totalCards)));
     document.documentElement.style.setProperty('--cards-per-row', cardsPerRow);
@@ -196,9 +219,6 @@ handleClick = event => {
           <nav className="navbar navbar-default myNavColor">
             <div className="container-fluid">
               <div className="navbar-header">
-                {/* <Typography variant="h4"  className="navbar-brand whiteText impactFont">
-                  Spider-Click
-                </Typography> */}
                 <h2 className="whiteText impactFont">Memory Mix-Up</h2>
               </div>
 
